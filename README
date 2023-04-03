@@ -1,0 +1,7 @@
+FILES I AM SUBMITTING:
+Token.java, Tokenizer.java, TokenScanner.java, TokenUtil.java
+
+INSTRUCTIONS:
+Compile like any java program, and give it a command line argument for
+the name of the file (i.e. "TestProgram1")
+

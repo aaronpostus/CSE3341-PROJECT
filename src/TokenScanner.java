@@ -6,19 +6,11 @@ import java.util.*;
 
 public class TokenScanner {
 
-    String fileName;
-    private ArrayList<Token> tokens = new ArrayList<>();
+    public ArrayList<Token> tokens = new ArrayList<>();
     private char[] line;
-    private int tokenIndex = 0;
-    private int currentCharIndex = 0;
+    private int tokenIndex = 0, currentCharIndex = 0;
     private BufferedReader scanner;
-
-    // 31 - INTEGER
-    // 32 - IDENTIFIER (Uppercase letter followed by zero or more uppercase letters and zero or more digits)
-    // 33 - SCANNER @ EOS
-    // 34 - STRING OF CHARACTERS IS NOT LEGAL TOKEN
     public TokenScanner(String fileName) {
-        this.fileName = fileName;
         try {
             scanner = new BufferedReader(new FileReader(fileName));
             tokenizeLine();
@@ -28,6 +20,8 @@ public class TokenScanner {
             throw new RuntimeException(e);
         }
     }
+
+    // Tokenizes a line. It makes a recursive call if the line was only whitespace.
     private void tokenizeLine() {
         String currentLine;
         try {
@@ -38,7 +32,8 @@ public class TokenScanner {
         // Arrived at end of file.
         if(currentLine == null) {
             tokens.add(new Token(TokenUtil.END_OF_FILE_NUM));
-        } else {
+        }
+        else {
             line = currentLine.toCharArray();
             int tokensBefore = tokens.size();
 
@@ -86,6 +81,7 @@ public class TokenScanner {
         }
 
     }
+    // Look ahead to see if there is whitespace or a special symbol.
     private boolean validLookAhead() {
         // At end of line, so it's fine.
         if(currentCharIndex >= line.length) {
@@ -111,11 +107,12 @@ public class TokenScanner {
     private Token tokenizeInt() {
         int intLength = 0;
         // keep going til we hit a character that isn't a digit or we've reached end of line
+        int beforeIndex = currentCharIndex;
         while(currentCharIndex < line.length) {
             if(Character.getType(line[currentCharIndex]) != Character.DECIMAL_DIGIT_NUMBER) {
                 if(validLookAhead()) {
                     // We are not doing value for this project, but I can easily add functionality here later.
-                    return new Token(TokenUtil.INTEGER_NUM, "");
+                    return new Token(TokenUtil.INTEGER_NUM, Arrays.copyOfRange(line, beforeIndex, currentCharIndex));
                 } else {
                     return new Token(TokenUtil.ERROR_TOKEN_NUM);
                 }
@@ -123,7 +120,7 @@ public class TokenScanner {
             currentCharIndex++;
         }
         // Reached end of the line, so this has to be a valid integer.
-        return new Token(TokenUtil.INTEGER_NUM, "");
+        return new Token(TokenUtil.INTEGER_NUM, Arrays.copyOfRange(line, beforeIndex, line.length-1));
 
     }
     private Token tokenizeReservedWord() {
@@ -151,21 +148,22 @@ public class TokenScanner {
             return new Token(TokenUtil.ERROR_TOKEN_NUM);
         }
 
+        int beforeIndex = currentCharIndex - 1;
         // keep going til we hit a character that isn't an uppercase letter or a digit or we've reached end of line
         while(currentCharIndex < line.length) {
             charType = Character.getType(line[currentCharIndex]);
             if(!(charType == Character.UPPERCASE_LETTER || charType == Character.DECIMAL_DIGIT_NUMBER)) {
                 if(validLookAhead()) {
                     // We are not doing value for this project, but I can easily add functionality here later.
-                    return new Token(TokenUtil.IDENTIFIER_NUM, "");
+                    return new Token(TokenUtil.IDENTIFIER_NUM, Arrays.copyOfRange(line, beforeIndex, currentCharIndex));
                 } else {
                     return new Token(TokenUtil.ERROR_TOKEN_NUM);
                 }
             }
             currentCharIndex++;
         }
-        // Reached end of the line, so this has to be a valid integer.
-        return new Token(TokenUtil.INTEGER_NUM, "");
+        // Reached end of the line, so this has to be a valid identifier.
+        return new Token(TokenUtil.IDENTIFIER_NUM, Arrays.copyOfRange(line, beforeIndex, line.length));
     }
     private boolean tokenPresent(String token) {
         int length = 0;
@@ -209,7 +207,6 @@ public class TokenScanner {
 
         // We know there is one or more characters after this symbol, and it's not a simple symbol. Let's check
         // if it satisfies special conditions by looking ahead.
-
         String fullToken;
 
         switch (line[currentCharIndex]) {
@@ -299,17 +296,13 @@ public class TokenScanner {
         // neither token. this shouldn't happen.
         return null;
     }
-
+    // Exits the program because we encountered an error token.
     private void throwInvalidTokenError() {
         System.out.println("Error. Invalid token found.");
         System.exit(1);
     }
 
-    /** This returns a number between 1 and 32 if the current token is a proper Core
-     token; 33 if the Scanner is at the end of the file and there are no more tokens; 34 if the Scanner comes
-     across a string that is not a legal token. Note that getToken() does not move the “cursor” forward.
-     So repeated calls to getToken() will return the same value. To move past the current token, the
-     Parser has to call skipToken(). **/
+    // Gets current token without advancing forward.
     public int getToken() {
         if(tokenIndex == -1) {
             if(tokens.size() > 0) {
@@ -322,17 +315,7 @@ public class TokenScanner {
         return tokens.get(tokenIndex).getTokenNumber();
     }
 
-    /**: This method moves the “token cursor” to the next token (but does not return
-     anything). If there are no more tokens in the current line, skipToken() calls tokenizeLine()
-     which will read the next line from the input file and convert the sequence of characters into a sequence
-     of Core tokens and save them in the Scanner’s data structure and set the cursor index to point to the
-     first token and return
-
-     If, when skipToken() is called, the current token is 33, i.e., we are already at the end-of-file, the
-     cursor is not moved since there are no more lines or tokens to read. Similarly, if the current token is
-     34, i.e., we have an illegal token, the cursor is not moved since we do not go past an illlegal token.
-
-     **/
+    // Skip to next token if it's not an error token or we are not at the end of the file.
     public void skipToken() {
         int currentTokenNumber = tokens.get(tokenIndex).getTokenNumber();
         // Only skips if we are NOT at the end of file and the current token is NOT an illegal token.
@@ -346,9 +329,7 @@ public class TokenScanner {
         }
     }
 
-    /**If getToken() returns 31 to indicate that the current token is an integer, we may
-     call intVal() to get the value of that integer. If we call intVal() when the current token is not
-     an integer, it will print an error message and the program will terminate. **/
+    // Gets int value: Note, this may not work yet.
     public int intVal() {
         if(getToken() == TokenUtil.INTEGER_NUM) {
             return tokens.get(tokenIndex).getValueAsInt();
@@ -357,10 +338,7 @@ public class TokenScanner {
         }
     }
 
-    /**: If getToken() returns 32 to indicate that the current token is an identifier,
-     we may call idName() to get the name of that identifier. If we call idName() when the current token is not an
-     identifier, it will print an error message and the program will terminate. Both intVal()
-     and idName() will make use of the **/
+    // Gets ID: Note, this may not work yet work.
     public String idName() {
         if(getToken() == TokenUtil.IDENTIFIER_NUM) {
             return tokens.get(tokenIndex).getValueAsString();

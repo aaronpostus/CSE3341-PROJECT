@@ -14,6 +14,11 @@ public class Tokenizer {
                 System.out.print(token + " ");
                 scanner.skipToken();
             }
+            for(Token potentialID : scanner.tokens) {
+                if(potentialID.getTokenNumber() == TokenUtil.INTEGER_NUM) {
+                    System.out.print("\n" + "Identifier: " + potentialID.getValueAsString());
+                }
+            }
             System.exit(1);
         }
     }

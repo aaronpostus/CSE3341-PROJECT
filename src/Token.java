@@ -16,9 +16,9 @@ public class Token {
         this.tokenNumber = tokenNumber;
     }
     // Should be used for creating integers or identifiers
-    public Token(int tokenNumber, String value) {
+    public Token(int tokenNumber, char[] value) {
         this.tokenNumber = tokenNumber;
-        this.value  = value.toCharArray();
+        this.value  = value;
     }
     public int getTokenNumber() {
         return tokenNumber;
@@ -29,6 +29,6 @@ public class Token {
     }
     // precondition: this is an identifier token and has a valid, parsable string stored in the char array "value".
     public String getValueAsString() {
-        return value.toString();
+        return String.valueOf(value);
     }
 }
