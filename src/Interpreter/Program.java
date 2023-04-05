@@ -1,7 +1,7 @@
 package Interpreter;
 
-import Tokenizer.Tokenizer;
 import Tokenizer.TokenUtil;
+import Tokenizer.Tokenizer;
 
 public class Program implements INode {
     private DeclarationSequence declSeq;
@@ -13,7 +13,7 @@ public class Program implements INode {
 
     public void print() {
         PrettyPrinter printer = PrettyPrinter.instance();
-        printer.println("program");
+        printer.print("program");
         declSeq.print();
         printer.indent();
         int indent = printer.getIndentNumber();

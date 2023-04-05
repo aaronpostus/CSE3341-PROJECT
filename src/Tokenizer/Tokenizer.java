@@ -321,7 +321,6 @@ public class Tokenizer {
 
     // Skip to next token if it's not an error token or we are not at the end of the file.
     public void skipToken() {
-        System.out.print(getToken() +" ");
         int currentTokenNumber = tokens.get(tokenIndex).getTokenNumber();
         // Only skips if we are NOT at the end of file and the current token is NOT an illegal token.
         if(currentTokenNumber != TokenUtil.END_OF_FILE_NUM && currentTokenNumber != TokenUtil.ERROR_TOKEN_NUM) {

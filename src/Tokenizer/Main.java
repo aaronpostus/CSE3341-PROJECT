@@ -24,7 +24,7 @@ public class Main {
             Reader.instance().initializeReader(args[1]);
             program.execute();
             Reader.instance().closeReader();
-            System.exit(1214214);
+            System.exit(0);
         }
     }
 

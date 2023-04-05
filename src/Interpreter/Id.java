@@ -1,7 +1,7 @@
 package Interpreter;
 
-import Tokenizer.Tokenizer;
 import Tokenizer.TokenUtil;
+import Tokenizer.Tokenizer;
 
 public class Id implements INode {
     public String name;
