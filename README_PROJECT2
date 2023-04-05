@@ -1,0 +1,16 @@
+Special Considerations:
+ - Last project, Tyler had issues running my code and got an "IllegalAccessError".
+   He was able to fix this by removing the ".java" in the command he ran. If this occurs again, give this a try.
+ - I chose to do the object oriented approach, so you should be running my Main file.
+ - I built this project with IntelliJ, so if you absolutely cannot get it to run, perhaps try opening it with
+   IntelliJ (free for OSU students).
+
+Files I am submitting:
+ - My (slightly modified) tokenizer files Token.java, Tokenizer.java, and TokenUtil.java
+ - My Main.java file that creates the tokenizer and runs it, then creates a Program and begins the parsing,
+   printing, and executing procedures
+ - Many Node files: Assignment.java, ComparativeOperation.java, Comparison.java, Condition.java, Declaration.java,
+   DeclarationSequence.java, Expression.java, Factor.java, Id.java, IdList.java, If.java, In.java, INode.java,
+   Loop.java, Operation.java, Out.java, Program.java, Statement.java, StatementSequence.java
+ - My pretty printer helper class PrettyPrinter.java
+ - My reader helper class Reader.java

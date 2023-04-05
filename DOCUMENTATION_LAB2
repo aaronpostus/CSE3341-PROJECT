@@ -1,0 +1,39 @@
+OVERALL DESIGN OF CORE TOKENIZER AND INTERPRETER:
+The tokenizer will not be described since it is mostly unchanged from the first project.
+
+-- For the interpreter, I chose the OOP approach as described in class --
+My main class creates an instance of the program file and passes through an instance of the tokenizer.
+The main class then calls parse on my instance of Program. Program then uses getToken() and skipToken() to advance
+the tokenizer and determine alternative numbers. It calls parse() on its appropriate members given the alternative
+number. This process continues until the entire program has been parsed. Every node has a separate class corresponding
+to it and implements the parse(), print(), and execute() methods. One important detail is that declaration
+of ids is dealt with at parsing. The issue of undeclared ids is also dealt with at parsing.
+
+After the program has been parsed, Main calls print() on the program. This goes through a similar process as parse,
+but doesn't use the tokenizer. Instead, it uses the parse tree that has been built and calls print on all the
+appropriate members until it descends through the tree and prints the whole program.
+
+I created a PrettyPrinter singleton class that makes it easy to add indents, start new lines, etc.
+
+After the program has been printed, execute() is called on program. Many node classes have an empty execute method
+since nothing needs to happen. Many have an "evaluate()" method instead since that is more relevant to the given
+use case. Some execute methods call execute methods on their members. Some execute methods have different behavior
+based on alternative number.  One important note is that assignment is an execution job.
+
+I created a Reader class that makes reading data from a file more elegant.
+
+USER MANUAL:
+Create a text file and write a program written in the Core language.
+
+Next, create a data file, and write one integer per line. This is not a hard requirement, as long as your integers
+are spaced out that's also fine.
+
+* EVEN IF YOUR PROGRAM DOES NOT HAVE DATA, YOU MUST MAKE A DATA FILE EVEN IF IT IS EMPTY *
+
+Then, provide the program file and data file as command line arguments to my program (in that order), and run it.
+
+It will tokenize the program, parse the tokens, pretty print the program to the console, then execute and output any
+necessary output to the console.
+
+BRIEF DESCRIPTION OF TESTING, KNOWN BUGS, AND MISSING FEATURES:
+There are no known bugs. I ran as many tests as I could, and I added as many error checks as I believed were necessary.

@@ -1,7 +1,6 @@
-package Tokenizer;
-
 import Interpreter.Program;
 import Interpreter.Reader;
+import Tokenizer.Tokenizer;
 
 public class Main {
 
