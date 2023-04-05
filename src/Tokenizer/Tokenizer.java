@@ -1,18 +1,22 @@
+package Tokenizer;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class TokenScanner {
+public class Tokenizer {
 
     public ArrayList<Token> tokens = new ArrayList<>();
+    // Necessary to keep track of duplicates
+    public Map<String, Integer> ids = new LinkedHashMap<>();
     private char[] line;
     private int tokenIndex = 0, currentCharIndex = 0;
     private BufferedReader scanner;
-    public TokenScanner(String fileName) {
+    public Tokenizer(String programFile) {
         try {
-            scanner = new BufferedReader(new FileReader(fileName));
+            scanner = new BufferedReader(new FileReader(programFile));
             tokenizeLine();
         }
         catch (FileNotFoundException e) {
@@ -20,7 +24,6 @@ public class TokenScanner {
             throw new RuntimeException(e);
         }
     }
-
     // Tokenizes a line. It makes a recursive call if the line was only whitespace.
     private void tokenizeLine() {
         String currentLine;
@@ -181,6 +184,7 @@ public class TokenScanner {
         // i.e. if "in" was at the end of the line, this could mistakenly be tokenized as "int" without this check.
         return length == token.length();
     }
+
     private Token tokenizeSpecialCharacter() {
 
         // Assume it's an error til we find a valid token
@@ -317,6 +321,7 @@ public class TokenScanner {
 
     // Skip to next token if it's not an error token or we are not at the end of the file.
     public void skipToken() {
+        System.out.print(getToken() +" ");
         int currentTokenNumber = tokens.get(tokenIndex).getTokenNumber();
         // Only skips if we are NOT at the end of file and the current token is NOT an illegal token.
         if(currentTokenNumber != TokenUtil.END_OF_FILE_NUM && currentTokenNumber != TokenUtil.ERROR_TOKEN_NUM) {
@@ -332,7 +337,12 @@ public class TokenScanner {
     // Gets int value: Note, this may not work yet.
     public int intVal() {
         if(getToken() == TokenUtil.INTEGER_NUM) {
-            return tokens.get(tokenIndex).getValueAsInt();
+            Token token = tokens.get(tokenIndex);
+            if(!token.hasValue()) {
+                System.out.println("An uninitialized variable was accessed.");
+                System.exit(1);
+            }
+            return token.getValueAsInt();
         } else {
             throw new RuntimeException("Attempted to parse a non-integer token as an integer.");
         }
@@ -344,6 +354,13 @@ public class TokenScanner {
             return tokens.get(tokenIndex).getValueAsString();
         } else {
             throw new RuntimeException("Attempted to parse a non-identifier token as an identifier.");
+        }
+    }
+    public void closeInputStream() {
+        try {
+            scanner.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

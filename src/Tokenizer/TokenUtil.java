@@ -1,22 +1,24 @@
+package Tokenizer;
+
 import java.util.*;
 
 public class TokenUtil {
-    static List<Character> DIGITS = Arrays.asList('0','1','2','3','4','5','6','7','8','9');
+    public static final List<Character> DIGITS = Arrays.asList('0','1','2','3','4','5','6','7','8','9');
 
     // RESERVED WORDS
-    static int PROGRAM_NUM = 1;
-    static int BEGIN_NUM = 2;
-    static int END_NUM = 3;
-    static int INT_NUM = 4;
-    static int IF_NUM = 5;
-    static int THEN_NUM = 6;
-    static int ELSE_NUM = 7;
-    static int WHILE_NUM = 8;
-    static int LOOP_NUM = 9;
-    static int READ_NUM = 10;
-    static int WRITE_NUM = 11;
+    public static final int PROGRAM_NUM = 1;
+    public static final int BEGIN_NUM = 2;
+    public static final int END_NUM = 3;
+    public static final int INT_NUM = 4;
+    public static final int IF_NUM = 5;
+    public static final int THEN_NUM = 6;
+    public static final int ELSE_NUM = 7;
+    public static final int WHILE_NUM = 8;
+    public static final int LOOP_NUM = 9;
+    public static final int READ_NUM = 10;
+    public static final int WRITE_NUM = 11;
 
-    static Map<String, Integer> RESERVED_WORDS = new HashMap<>();
+    public static final Map<String, Integer> RESERVED_WORDS = new HashMap<>();
 
     static {
         RESERVED_WORDS.put("program", TokenUtil.PROGRAM_NUM);
@@ -34,40 +36,40 @@ public class TokenUtil {
 
     // SPECIAL SYMBOLS
 
-    static int SEMICOLON_NUM = 12;
-    static int COMMA_NUM = 13;
-    static int EQUALS_NUM = 14;
-    static int EXCLAMATION_NUM = 15;
-    static int OPEN_BRACKET_NUM = 16;
-    static int CLOSED_BRACKET_NUM = 17;
-    static int AND_NUM = 18;
-    static int OR_NUM = 19;
-    static int OPEN_PARENTHESIS_NUM = 20;
-    static int CLOSED_PARENTHESIS_NUM = 21;
-    static int PLUS_NUM = 22;
-    static int MINUS_NUM = 23;
-    static int TIMES_NUM = 24;
-    static int NOT_EQUALS_NUM = 25;
-    static int DOUBLE_EQUALS_NUM = 26;
+    public static final int SEMICOLON_NUM = 12;
+    public static final int COMMA_NUM = 13;
+    public static final int EQUALS_NUM = 14;
+    public static final int EXCLAMATION_NUM = 15;
+    public static final int OPEN_BRACKET_NUM = 16;
+    public static final int CLOSED_BRACKET_NUM = 17;
+    public static final int AND_NUM = 18;
+    public static final int OR_NUM = 19;
+    public static final int OPEN_PARENTHESIS_NUM = 20;
+    public static final int CLOSED_PARENTHESIS_NUM = 21;
+    public static final int PLUS_NUM = 22;
+    public static final int MINUS_NUM = 23;
+    public static final int TIMES_NUM = 24;
+    public static final int NOT_EQUALS_NUM = 25;
+    public static final int DOUBLE_EQUALS_NUM = 26;
     // <
-    static int LESS_THAN_NUM = 27;
+    public static final int LESS_THAN_NUM = 27;
     // >
-    static int GREATER_THAN_NUM = 28;
+    public static final int GREATER_THAN_NUM = 28;
     // <=
-    static int LESS_THAN_OR_EQUAL_NUM = 29;
+    public static final int LESS_THAN_OR_EQUAL_NUM = 29;
     // >=
-    static int GREATER_THAN_OR_EQUAL_NUM = 30;
+    public static final int GREATER_THAN_OR_EQUAL_NUM = 30;
 
     // MISCELLANEOUS
-    static int INTEGER_NUM = 31;
-    static int IDENTIFIER_NUM = 32;
-    static int END_OF_FILE_NUM = 33;
-    static int ERROR_TOKEN_NUM = 34;
+    public static final int INTEGER_NUM = 31;
+    public static final int IDENTIFIER_NUM = 32;
+    public static final int END_OF_FILE_NUM = 33;
+    public static final int ERROR_TOKEN_NUM = 34;
 
     // Single character, and no need to worry about greedy tokenizing.
-    static Map<String, Integer> SIMPLE_SPECIAL_SYMBOLS = new HashMap<>();
+    public static final Map<String, Integer> SIMPLE_SPECIAL_SYMBOLS = new HashMap<>();
     // One or two characters. Need to consider greedy tokenizing.
-    static Map<String, Integer> COMPLEX_SPECIAL_SYMBOLS = new HashMap<>();
+    public static final Map<String, Integer> COMPLEX_SPECIAL_SYMBOLS = new HashMap<>();
 
     static {
         SIMPLE_SPECIAL_SYMBOLS.put(";", TokenUtil.SEMICOLON_NUM);
@@ -99,6 +101,9 @@ public class TokenUtil {
         COMPLEX_SPECIAL_SYMBOLS.put(">=", TokenUtil.GREATER_THAN_OR_EQUAL_NUM);
     }
 
-
-
+    public static final void unexpectedError(Tokenizer tok, String expectedTokenName) {
+        System.out.println("Error: Expected a(n) " + expectedTokenName + ", but" +
+                " encountered a token with the id " + tok.getToken());
+        System.exit(1);
+    }
 }

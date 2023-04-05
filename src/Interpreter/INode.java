@@ -1,6 +1,6 @@
 package Interpreter;
 
-public interface Node {
+public interface INode {
     void print();
     void parse();
     void execute();

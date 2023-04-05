@@ -1,5 +1,5 @@
 FILES I AM SUBMITTING:
-Token.java, Tokenizer.java, TokenScanner.java, TokenUtil.java
+Tokenizer.Token.java, Tokenizer.Main.java, Tokenizer.Tokenizer.java, Tokenizer.TokenUtil.java
 
 INSTRUCTIONS:
 Compile like any java program, and give it a command line argument for
