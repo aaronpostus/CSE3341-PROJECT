@@ -14,3 +14,4 @@ The third project is entirely disconnected from the first two, and is a program 
 is an expression I created called "eliminateNsort" that accepts two lists. It eliminates all elements in L1
 that are also in L2, and then sorts the result. There are a number of simple, helper methods that accomplish this
 to conform to the functional programming paradigm.
+(file name is myfns.scm)
